@@ -1,12 +1,13 @@
 package com.company.smirnov.client;
 
 import com.company.smirnov.common.Message;
-import com.company.smirnov.common.ReceivingAnsSendingMessage;
+import com.company.smirnov.common.ReceivingAndSendingMessage;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 import static java.lang.System.*;
@@ -31,8 +32,8 @@ public class Client {
             out.println("Введите текст сообщения");
             String text = scanner.nextLine();
             if (!text.equals(exitCommand)) {
-                try (ReceivingAnsSendingMessage connectionHandler =
-                             new ReceivingAnsSendingMessage(new Socket(
+                try (ReceivingAndSendingMessage connectionHandler =
+                             new ReceivingAndSendingMessage(new Socket(
                                      address.getHostName(),
                                      address.getPort()
                              ))) {
@@ -41,8 +42,10 @@ public class Client {
                     try {
                         connectionHandler.send(message);
                         Message fromServer = connectionHandler.read();
-
                         out.println(fromServer.getText());
+                        if (text.equals("/ping")){
+                            out.println("%d ms".formatted(ChronoUnit.MILLIS.between(message.getTimeOfSending(), LocalDateTime.now())));
+                        }
                     } catch (IOException e) {
 
                     }
@@ -53,5 +56,6 @@ public class Client {
                 checkMessage = false;
             }
         }
+
     }
 }

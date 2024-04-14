@@ -21,7 +21,7 @@ public enum RequestsServer {
         public String getFunctionality() {
             out.println("Время ответа сервера");
             setCounterRequest(getCounterRequest()+1);
-            return null;
+            return getRequestDescription();
         }
     },
     REQUESTS("/requests", "Количество успешно обработанных запросов", 0) {
@@ -37,15 +37,15 @@ public enum RequestsServer {
         @Override
         public String getFunctionality() {
             long max = -1;
-            String stringmax = "";
+            String stringMax = "";
             for (RequestsServer requestServer : RequestsServer.values()) {
                 if (requestServer.getCounterRequest() > max) {
                     max = requestServer.getCounterRequest();
-                    stringmax = requestServer.getRequestName();
+                    stringMax = requestServer.getRequestName();
                 }
             }
             setCounterRequest(getCounterRequest()+1);
-            return "%s: %s".formatted(getRequestDescription(), stringmax);
+            return "%s: %s".formatted(getRequestDescription(), stringMax);
         }
     };
     private final String requestName;

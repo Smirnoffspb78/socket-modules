@@ -5,15 +5,13 @@ import java.net.Socket;
 import java.time.LocalDateTime;
 
 
-public class ReceivingAnsSendingMessage implements AutoCloseable {
-
-    private Message message;
+public class ReceivingAndSendingMessage implements AutoCloseable {
     private Socket socket;  //Для установки соединения между клиентом и сервером нужен сокет //Для установки соединения между клиентом и сервером нужен сокет
 
-    private ObjectInputStream inputStream; //Для получения сообщения
-    private ObjectOutput outputStream; //Для отправки сообщения
+    private final ObjectInputStream inputStream; //Для получения сообщения
+    private final ObjectOutput outputStream; //Для отправки сообщения
 
-    public ReceivingAnsSendingMessage(Socket socket) throws IOException {
+    public ReceivingAndSendingMessage(Socket socket) throws IOException {
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream()); //инпут создается после аутпута, т.к. иначе инпут заблокирует инпут, т.к. канал будет ждать получения сообщения
     }
